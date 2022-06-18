@@ -76,23 +76,27 @@ banner = html.Div(id='banner',
                   ])
 
 main_info_graphs = html.Div(
-    className='parent',
+    style={'width': '100%', 'float': 'left'},
     children=[
-        html.Div(className="pretty_container twelve columns",
+        html.Div(style={'width': '64%', 'float': 'left', 'border-radius': '5px',
+                        'margin': '10px', 'padding': '15px', 'position': 'relative',
+                        'box-shadow': '2px 2px 2px lightgrey', 'background-color': 'rgb(255,255,255)'},
                  children=[
-                     dcc.Graph(id="portfolio_graph", style={'width': '99%'})]
+                     dcc.Graph(id="portfolio_graph")]
                  ),
-        html.Div(
-            children=[
-                html.Div(
-                    className="pretty_container",
-                    children=[
-                        dcc.Graph(id="pie_stocks", style={'display': 'inline-block'})
-                    ]
-                )
+        html.Div(style={'width': '30%', 'float': 'left', 'border-radius': '5px',
+                        'margin': '10px', 'padding': '15px', 'position': 'relative',
+                        'box-shadow': '2px 2px 2px lightgrey', 'background-color': 'rgb(255,255,255)'},
+                 children=[
+                     html.Div(
+                         style={'display': 'inline-block'},
+                         children=[
+                             dcc.Graph(id="pie_stocks")
+                         ]
+                     )
 
-            ]
-        )
+                 ]
+                 )
     ]
 )
 
@@ -100,6 +104,14 @@ main_info_table_stock = html.Div(
     className='pretty_container row',
     children=[
         html.Table(id='table_stocks',
+                   className='pretty_container', style={'width': '100%'}
+                   )
+    ])
+
+heatmap = html.Div(
+    className='pretty_container row',
+    children=[
+        dcc.Graph(id='heatmap',
                    className='pretty_container', style={'width': '100%'}
                    )
     ])
@@ -115,10 +127,45 @@ cash_info_table_stock = html.Div(
                    )
     ])
 
+var = html.Div(
+    className='pretty_container row',
+    children=[
+        html.Div(style={'width': '60%', 'float': 'left', 'border-radius': '5px',
+                        'margin': '10px', 'padding': '15px', 'position': 'relative',
+                        'box-shadow': '2px 2px 2px lightgrey', 'background-color': 'rgb(255,255,255)'},
+                 children=[
+                     dcc.Graph(id="histogram"), ]
+                 ),
+        html.Div(style={'width': '60%', 'float': 'left', 'border-radius': '5px',
+                        'margin': '10px', 'padding': '15px', 'position': 'relative',
+                        'box-shadow': '2px 2px 2px lightgrey', 'background-color': 'rgb(255,255,255)'},
+                 children=[
+                     html.Div(
+                         className="pretty_container row",
+                         children=[
+                             html.Table(id='table_var', className='pretty_container', style={'width': '100%'})
+                         ]
+                     )
+
+                 ]
+                 )
+    ])
+
+time_series_returns = html.Div(
+    className='pretty_container row',
+    children=[html.Div(style={'width': '100%', 'float': 'left', 'border-radius': '5px',
+                        'margin': '10px', 'padding': '15px', 'position': 'relative',
+                        'box-shadow': '2px 2px 2px lightgrey', 'background-color': 'rgb(255,255,255)'},
+                 children=[
+                     dcc.Graph(id="returns_time_series"), ]
+                 )])
+
 # LAYOUT
-app.layout = html.Div(id="main_container",
+app.layout = html.Div(
                       style={'display': 'flex', 'flex-direction': 'column'},
                       children=[
+                          # dcc.Interval(id='interval_update',
+                          #              interval=50000),
                           html.Div(id='update'),
                           dcc.Location(id='url', refresh=False),
                           html.Link(rel='stylesheet', href='input_files/stylesheet.css'),
@@ -127,13 +174,15 @@ app.layout = html.Div(id="main_container",
                               dcc.Tabs([
                                   dcc.Tab(label='Main Information', children=[
                                       main_info_graphs,
-                                      main_info_table_stock
+                                      main_info_table_stock,
+                                      heatmap
                                   ]),
                                   dcc.Tab(label='Cashflows Information', children=[
                                       cash_info_table_stock
                                   ]),
                                   dcc.Tab(label='Risk Management', children=[
-
+                                      var,
+                                      time_series_returns
                                   ]),
                               ])
                           ]),
