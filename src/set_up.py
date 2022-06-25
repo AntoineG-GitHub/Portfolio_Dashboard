@@ -6,7 +6,9 @@ import yfinance as yf
 import datetime
 from utils import get_historical_portfolio, get_buying_portfolio
 
+print(os.getcwd())
 os.chdir(r"d:\Users\Antoine\Documents\Umbrella_Fund\Code_projects\Dashboard")
+# os.chdir(r"/home/ubuntu/Dashboard")
 portfolio_table = pd.read_excel("Cashflows.xlsx", sheet_name="Portfolio")
 portfolio_table.index = portfolio_table.Ticker
 portfolio_table = portfolio_table.drop(columns=['Ticker'])

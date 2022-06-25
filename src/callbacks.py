@@ -423,7 +423,6 @@ def display_heatmap(n_clicks):
     portfolio_returns = portfolio_returns.iloc[5:]
 
     pd_risk = pd.DataFrame(historical_portfolio, index=index).pct_change().iloc[15:, :].mul(100)
-    print(pd_risk, np.round(np.percentile(pd_risk['Close'], 95)), pd_risk.loc[pd_risk['Close'] < np.round(np.percentile(pd_risk['Close'], 5))])
     risk = pd_risk.loc[pd_risk['Close'] < np.round(np.percentile(pd_risk['Close'], 5))]
 
     portfolio = go.Scatter(x=pd_risk.index, y=np.array(pd_risk['Close']), name="Portfolio")
