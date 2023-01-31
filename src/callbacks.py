@@ -21,7 +21,7 @@ def static_file(path):
     Input("update", "n_clicks")
 )
 def display_date_and_hour_refesh(n_clicks):
-    return 'Last updated on {}'.format(datetime.datetime.now().strftime('%A %d %Y, %H:%M:%S'))
+    return 'Last updated on {}'.format(datetime.now().strftime('%A %d %Y, %H:%M:%S'))
 
 @app.callback(
     Output(component_id='total_holdings', component_property='children'),
@@ -50,16 +50,15 @@ def compute_todays_change(n_clicks):
     Input(component_id='update', component_property='n_clicks')
 )
 def compute_profits(n_clicks):
-    print("Portfolio's Profit")
     total_profit = 0
-    for ticker in cashflows_ticker.index:
-        total_buying_amount_ticker = cashflows.loc[cashflows.Ticker == ticker].Total_amount.sum()
+    for ticker in cashflows_ticker.index:  # for all ticker traded
+        total_buying_amount_ticker = cashflows.loc[cashflows.Ticker == ticker].Total_amount.sum()  # Get the total amount of buying price-selling price
         if ticker in portfolio_table.index:
             present_value_ticker = portfolio_table.loc[ticker, 'amount_euro'].sum()
         else:
             present_value_ticker = 0
         profit_ticker = present_value_ticker - total_buying_amount_ticker - cashflows.loc[
-            cashflows.Ticker == ticker].Charges.sum()
+            cashflows.Ticker == ticker].Charges.sum()  # Profit is the total price difference minus charges
         total_profit += profit_ticker
     total_profit = np.round(total_profit, 2)
 
@@ -113,8 +112,8 @@ def compute_personal_profit(n_clicks):
 )
 def portfolio_graph(n_clicks):
     price_update = yf.download('SPYD', start='2022-02-26', progress=False)['Close']
-    if pd.to_datetime(today_real) not in pd.to_datetime(price_update.index):
-        price_update.loc[str(today_real)] = price_update.tail(1).values[0]
+    if pd.to_datetime(today) not in pd.to_datetime(price_update.index):
+        price_update.loc[str(today)] = price_update.tail(1).values[0]
     price_update = pd.DataFrame(price_update, columns=['Close'], index=price_update.index)
     spyd = np.exp(np.log1p(price_update['Close'].pct_change()).cumsum())
     spyd = np.append([1], spyd)

@@ -7,6 +7,8 @@ import os
 import plotly.graph_objects as go
 
 app = Dash(__name__)
+application = app.server
+app.title = 'Umbrella on AWS'
 
 os.chdir("../")
 print(os.getcwd())

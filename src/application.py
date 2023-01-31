@@ -1,10 +1,11 @@
 import os
 
+from content import application
+
 
 def main():
     from content import app
     import callbacks
-    app.title = "Umbrella"
     app.run_server(debug=False, host='0.0.0.0')  # , host='0.0.0.0'
 
 
