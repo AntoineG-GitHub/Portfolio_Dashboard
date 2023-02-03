@@ -83,10 +83,6 @@ ipython_config.py
 
 # pyenv
 .python-version
-<<<<<<< HEAD
-.idea/workspace.xml
-=======
->>>>>>> f870ea0e9e6a5b8d4554a0c55a5e668ddaded032
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -131,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Files
+*.p
+
