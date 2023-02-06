@@ -265,7 +265,7 @@ def update_table_stock(n_clicks):
     Output(component_id='actor_deposits', component_property='children'),
     Input(component_id='update', component_property='n_clicks')
 )
-
+#aucune idée de pq il affiche pas la date
 def update_table_actors(n_clicks):
     actors_table = actor_deposits.copy()
     actors_table.Actor.loc[actors_table.Actor == 1] = "Antoine"
