@@ -123,7 +123,7 @@ cash_info_table_stock = html.Div(
     children=[
         html.Div(
             className='scrollable-table-container',
-            style={'height': '600px', 'overflow': 'scroll'},
+            style={'height': '600px', 'overflow': 'auto'},
             children=[
                 html.Table(id='cashflows',
                            className='pretty_container',
@@ -132,7 +132,7 @@ cash_info_table_stock = html.Div(
         ),
         html.Div(
             className='scrollable-table-container',
-            style={'height': '600px', 'overflow': 'scroll'},
+            style={'height': '600px', 'overflow': 'auto'},
             children=[                
                 html.Table(id='actor_deposits',
                            className='pretty_container',
