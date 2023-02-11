@@ -80,8 +80,9 @@ def compute_personal_profit(n_clicks):
         actor = {}
         start = str(start)[0:10]
         end = str(end)[0:10]
-        costs_period = cashflows.Charges.loc[cashflows.index == start].sum()
-        actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits.Date) <= pd.to_datetime(start)]
+        costs_period = cashflows.Charges.loc[cashflows.index == start].sum() 
+        print(actor_deposits)              
+        actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits) <= pd.to_datetime(start)]        
         actors = np.unique(actors_periods.Actor.tolist())
         percentages = {}
         total = actors_periods.CashFlow.sum()
@@ -248,9 +249,10 @@ def update_table_stock(n_clicks):
     Output(component_id='cashflows', component_property='children'),
     Input(component_id='update', component_property='n_clicks')
 )
-def update_table_stock(n_clicks):
-    cashflows_table = cashflows.reset_index(drop=True).copy()
-    cashflows_table.Date = cashflows_table.Date.astype(str)[0:10]
+#ajoute les données de cashflows dans le html
+def update_table_stock(n_clicks):   
+    cashflows_table = cashflows.reset_index(drop=False).copy()    
+    cashflows_table= cashflows_table.astype(str) 
     df = pd.DataFrame(cashflows_table)
     value = [html.Tr([html.Th(col) for col in df.columns])] + \
             [html.Tr([html.Td(df.iloc[i][col]) for col in df.columns])
@@ -263,16 +265,18 @@ def update_table_stock(n_clicks):
     Output(component_id='actor_deposits', component_property='children'),
     Input(component_id='update', component_property='n_clicks')
 )
+#aucune idée de pq il affiche pas la date
 def update_table_actors(n_clicks):
     actors_table = actor_deposits.copy()
     actors_table.Actor.loc[actors_table.Actor == 1] = "Antoine"
     actors_table.Actor.loc[actors_table.Actor == 2] = "Arthur"
     actors_table.Actor.loc[actors_table.Actor == 0] = "Dividends"
-    actors_table.Date = actors_table.Date.astype(str)[0:10]
+    actors_table= actors_table.astype(str)
     df = pd.DataFrame(actors_table)
     value = [html.Tr([html.Th(col) for col in df.columns])] + \
             [html.Tr([html.Td(df.iloc[i][col]) for col in df.columns])
              for i in range(min(len(df), 26))]
+   
 
     return value
 
