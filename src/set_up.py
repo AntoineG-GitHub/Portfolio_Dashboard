@@ -6,6 +6,7 @@ import yfinance as yf
 from utils import get_historical_portfolio, get_buying_portfolio, process_cashflows, get_date
 
 os.chdir(r"D:\Dashboard\Portfolio_dashboard")
+os.chdir(r"./Dashboard")
 
 portfolio_table, cashflows, actor_deposits, cashflows_aggregate, cashflows_ticker, tickers = process_cashflows("Cashflows.xlsx")
 print("portfolio_table \n", portfolio_table.head(3))
