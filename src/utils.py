@@ -7,7 +7,8 @@ import pandas as pd
 def get_historical_portfolio(cashflows, data, today, time_period):
     historical_portfolio = {}
     time_periods = np.unique(cashflows.index.astype(str))
-    time_periods = np.append(time_periods, today.strftime("%d/%m/%Y"))
+    time_periods = np.append(time_periods, today.strftime("%Y-%m-%d"))
+    print(time_periods)
 
     for start, end in zip(time_periods[:-1], time_periods[1:]):
         portfolio_period = cashflows.loc[cashflows.index <= pd.to_datetime(start)].reset_index(drop=True)
@@ -37,7 +38,7 @@ def get_historical_portfolio(cashflows, data, today, time_period):
 def get_buying_portfolio(cashflows, data, today):
     historical_portfolio = {}
     time_periods = np.unique(cashflows.index.astype(str))
-    time_periods = np.append(time_periods, today.strftime("%d/%m/%Y"))
+    time_periods = np.append(time_periods, today.strftime("%Y-%m-%d"))
     historical_portfolio['2022-02-25'] = pd.DataFrame([0])
 
     for start, end in zip(time_periods[:-1], time_periods[1:]):

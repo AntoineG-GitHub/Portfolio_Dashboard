@@ -95,11 +95,12 @@ for sublist in time_serie:
     for item in sublist:
         result.append(item)
 result = [x for x in result if str(x) != 'nan']
-print(result)
+print(len(result))
 price_update2 = data["SPYD.DE"].loc['2022-02-25':]
 if str(today) not in price_update2.index:
     print("not in:", pd.to_datetime(today), price_update2.index.values[-1])
     price_update2.loc[pd.to_datetime(today)] = price_update2.tail(1)["Close"]
+print(price_update2.index)
 portfolio_returns = pd.DataFrame(result, index=price_update2.index, columns=['returns']).mul(100)
 print(portfolio_returns)
 portfolio_returns['day_of_week'] = portfolio_returns.index.to_series().dt.day_name()
