@@ -3,18 +3,17 @@ from dash import Input, Output, html
 import plotly.graph_objects as go
 from dash import dcc
 import plotly.express as px
-from pages.content import app
 from flask import send_from_directory
 from utils.set_up import *
 import plotly.figure_factory as ff
 from utils.utils import get_profits_per_actor
+from pages.layout import app
 
 
 @app.server.route('/input_files/<path:path>')
 def static_file(path):
     static_folder = os.path.join(os.getcwd(), 'input_files')
     return send_from_directory(static_folder, path)
-
 
 @app.callback(
     Output("date_info_title", "children"),
@@ -31,7 +30,6 @@ def compute_total_holdings(n):
     total_holdings = sum(portfolio_table['amount_euro'])
     total_holdings = np.round(total_holdings, 2)
     return str(total_holdings) + "€"
-
 
 @app.callback(
     Output(component_id='todays_change', component_property='children'),

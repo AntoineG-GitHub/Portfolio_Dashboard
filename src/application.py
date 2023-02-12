@@ -1,11 +1,10 @@
 import os
-
-from pages.content import application
-
+from dash import Dash
 
 def main():
-    from pages.content import app
+    from pages.layout import app
     import utils.callbacks as callbacks
+
     app.run_server(debug=False, host='0.0.0.0')  # , host='0.0.0.0'
 
 

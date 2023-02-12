@@ -5,24 +5,25 @@ import pickle
 import yfinance as yf
 from utils.utils import get_historical_portfolio, get_buying_portfolio, process_cashflows, get_date
 
-# os.chdir(r"D:\Dashboard\Portfolio_dashboard")
-os.chdir(r"./Dashboard")
-
 portfolio_table, cashflows, actor_deposits, cashflows_aggregate, cashflows_ticker, tickers = process_cashflows("Cashflows.xlsx")
 print("portfolio_table \n", portfolio_table.head(3))
 print("cashflows \n", cashflows.head(3))
 print("actor_deposits \n", actor_deposits.head(3))
 print("cashflows_aggregate \n", cashflows_aggregate.head(3))
 print("cashflows_ticker \n", cashflows_ticker.head(3))
+
+# get today's date
 starting, today = get_date()
 
+# Download data from tickers present in the cashflows file
 data = {}  # dictionary of tickers and table with history of price
 for ticker in tickers.index:
     data_ticker = yf.download(ticker)[['Open', 'Close']]
     data[ticker] = pd.DataFrame.from_dict(data_ticker)
     data[ticker] = data[ticker].rename(columns={'Close': 'Close', 'Open': 'Open'})
-eur_usd = yf.download('EURUSD=X')[['Open', 'Close']]
 
+# Download conversion EUR-USD
+eur_usd = yf.download('EURUSD=X')[['Open', 'Close']]
 # If we are not on a business day, I add a row for each ticker's dataframe with the price of the last business day
 for ticker in data.keys():
     last_date = data[ticker].tail(1).index
