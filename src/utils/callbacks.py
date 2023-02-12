@@ -3,11 +3,11 @@ from dash import Input, Output, html
 import plotly.graph_objects as go
 from dash import dcc
 import plotly.express as px
-from content import app
+from pages.content import app
 from flask import send_from_directory
-from set_up import *
+from utils.set_up import *
 import plotly.figure_factory as ff
-from utils import get_profits_per_actor
+from utils.utils import get_profits_per_actor
 
 
 @app.server.route('/input_files/<path:path>')

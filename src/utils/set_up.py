@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import pickle
 import yfinance as yf
-from utils import get_historical_portfolio, get_buying_portfolio, process_cashflows, get_date
+from utils.utils import get_historical_portfolio, get_buying_portfolio, process_cashflows, get_date
 
-os.chdir(r"D:\Dashboard\Portfolio_dashboard")
+# os.chdir(r"D:\Dashboard\Portfolio_dashboard")
 os.chdir(r"./Dashboard")
 
 portfolio_table, cashflows, actor_deposits, cashflows_aggregate, cashflows_ticker, tickers = process_cashflows("Cashflows.xlsx")
@@ -16,34 +16,12 @@ print("cashflows_aggregate \n", cashflows_aggregate.head(3))
 print("cashflows_ticker \n", cashflows_ticker.head(3))
 starting, today = get_date()
 
-# # data = import_stock_data()
 data = {}  # dictionary of tickers and table with history of price
 for ticker in tickers.index:
     data_ticker = yf.download(ticker)[['Open', 'Close']]
     data[ticker] = pd.DataFrame.from_dict(data_ticker)
     data[ticker] = data[ticker].rename(columns={'Close': 'Close', 'Open': 'Open'})
 eur_usd = yf.download('EURUSD=X')[['Open', 'Close']]
-
-# for ticker in data.keys():
-#     today = data[ticker].tail(1).index
-#     if today.values != np.datetime64(today_real):
-#         data[ticker] = pd.concat([data[ticker], pd.DataFrame(data[ticker].tail(1)[['Open', 'Close']].values,
-#                                                              index=[pd.to_datetime(today_real)],
-#                                                              columns=['Open', 'Close'])])
-# last_eur_usd = eur_usd['Close'].iloc[-1]
-# two_days_eur_usd = eur_usd['Close'].iloc[-2]
-# today = data[list(data.keys())[0]].tail(1).index
-#
-# for ticker in data:  # Add a price_euro column in the data
-#     price_table = data[str(ticker)]
-#     if cashflows_ticker.loc[ticker, 'Currency'] == '$':
-#         price_table['price_euro'] = price_table.Close / last_eur_usd
-#         price_table['price_euro_yesterday'] = price_table.Open / two_days_eur_usd
-#         price_table['returns'] = price_table.Close.pct_change()
-#     elif cashflows_ticker.loc[ticker, 'Currency'] == '€':
-#         price_table['price_euro'] = price_table.Close / 1
-#         price_table['price_euro_yesterday'] = price_table.Open / 1
-#         price_table['returns'] = price_table.Close.pct_change()
 
 # If we are not on a business day, I add a row for each ticker's dataframe with the price of the last business day
 for ticker in data.keys():

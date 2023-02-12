@@ -1,11 +1,11 @@
 import os
 
-from content import application
+from pages.content import application
 
 
 def main():
-    from content import app
-    import callbacks
+    from pages.content import app
+    import utils.callbacks as callbacks
     app.run_server(debug=False, host='0.0.0.0')  # , host='0.0.0.0'
 
 
