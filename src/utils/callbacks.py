@@ -50,7 +50,8 @@ def compute_todays_change(n_clicks):
 def compute_profits(n_clicks):
     total_profit = 0
     for ticker in cashflows_ticker.index:  # for all ticker traded
-        total_buying_amount_ticker = cashflows.loc[cashflows.Ticker == ticker].Total_amount.sum()  # Get the total amount of buying price-selling price
+        total_buying_amount_ticker = cashflows.loc[cashflows.Ticker == ticker].Total_amount.sum()  # Get the total amount of buying price-selling price to compute the margin on that ticker stock
+        # TODO: Use this data to create new table to inform about prodit by stock
         if ticker in portfolio_table.index:
             present_value_ticker = portfolio_table.loc[ticker, 'amount_euro'].sum()
         else:
@@ -58,29 +59,31 @@ def compute_profits(n_clicks):
         profit_ticker = present_value_ticker - total_buying_amount_ticker - cashflows.loc[
             cashflows.Ticker == ticker].Charges.sum()  # Profit is the total price difference minus charges
         total_profit += profit_ticker
-    total_profit = np.round(total_profit, 2)
+    total_profit = np.round(total_profit + actor_deposits.loc[actor_deposits.Actor == 0].CashFlow.sum(), 2)
 
     return str(total_profit) + "€"
 
 
 @app.callback(
     [Output(component_id='Antoine_profit', component_property='children'),
-     Output(component_id='Arthur_profit', component_property='children')],
+     Output(component_id='Arthur_profit', component_property='children'),
+     Output(component_id='Dividend_profit', component_property='children')],
     Input(component_id='update', component_property='n_clicks')
 )
 def compute_personal_profit(n_clicks):
+    print("compute personnal profits")
     portfolio_series_buying = get_buying_portfolio(cashflows, data, today)
     profit_period = {}
     costs_per_actor = {}
-    time_periods = np.unique(pd.to_datetime(cashflows.index))
-    time_periods = np.append(time_periods, today)
+    time_periods = np.unique(cashflows.index.astype(str))
+    time_periods = np.append(time_periods, today.strftime("%Y-%m-%d"))
     for start, end in zip(time_periods[:-1], time_periods[1:]):  # TODO: Do I have to substract the costs ?
+        print(start, end)
         actor = {}
         start = str(start)[0:10]
         end = str(end)[0:10]
-        costs_period = cashflows.Charges.loc[cashflows.index == start].sum() 
-        print(actor_deposits)              
-        actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits) <= pd.to_datetime(start)]        
+        costs_period = cashflows.Charges.loc[cashflows.index == start].sum()             
+        actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits.index) <= pd.to_datetime(start)]        
         actors = np.unique(actors_periods.Actor.tolist())
         percentages = {}
         total = actors_periods.CashFlow.sum()
@@ -88,6 +91,7 @@ def compute_personal_profit(n_clicks):
         for numbers in actors:
             percentages[numbers] = actors_periods.loc[actors_periods.Actor == numbers].CashFlow.sum() / total
             actor[numbers] = (percentages[numbers] * costs_period)
+            print(actor)
         costs_per_actor[start] = actor
         profit_period[end] = get_profits_per_actor(start, end, portfolio_series_buying, actor_deposits)
     costs_per_actor[str(time_periods[-1])[0:10]] = {1: 0, 2: 0}
@@ -102,7 +106,8 @@ def compute_personal_profit(n_clicks):
     antoine = antoine - costs_per_actor['2022-02-25'][1]
     arthur = arthur - costs_per_actor['2022-02-25'][2]
     return ["Antoine's Profit : " + str(np.round(antoine, 2)) + "€",
-            "Arthur's Profit : " + str(np.round(arthur, 2)) + "€"]
+            "Arthur's Profit : " + str(np.round(arthur, 2)) + "€",
+            "Dividend's Profit : " + str(np.round(actor_deposits.loc[actor_deposits.Actor == 0].CashFlow.sum(), 2)) + "€"]
 
 
 @app.callback(

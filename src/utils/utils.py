@@ -80,7 +80,7 @@ def get_profits_per_actor(start, end, portfolio_series_buying, actor_deposits):
     print("profit from get_profit_per_actor:", profit)
 
     profits_per_actor = {}
-    actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits.Date) <= pd.to_datetime(start)]
+    actors_periods = actor_deposits.loc[pd.to_datetime(actor_deposits.index) <= pd.to_datetime(start)]
     actors = np.unique(actors_periods.Actor.tolist())
     percentages = {}
     total = actors_periods.CashFlow.sum()

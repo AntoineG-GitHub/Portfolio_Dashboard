@@ -6,10 +6,15 @@ import yfinance as yf
 from utils.utils import get_historical_portfolio, get_buying_portfolio, process_cashflows, get_date
 
 portfolio_table, cashflows, actor_deposits, cashflows_aggregate, cashflows_ticker, tickers = process_cashflows("Cashflows.xlsx")
+# portoflio table: table avec les stocks actuellement dans le portfolio
 print("portfolio_table \n", portfolio_table.head(3))
+# cashflow table: table avec tous le cashflow depuis la création du portfolio
 print("cashflows \n", cashflows.head(3))
+# actor table: table avec tous le depots de chaque acteurs
 print("actor_deposits \n", actor_deposits.head(3))
+# cashflow aggregate table: 
 print("cashflows_aggregate \n", cashflows_aggregate.head(3))
+# cashflow ticker table: table avec le nombre de d'actions par ticker avec sa devise
 print("cashflows_ticker \n", cashflows_ticker.head(3))
 
 # get today's date

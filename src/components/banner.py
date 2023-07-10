@@ -58,6 +58,8 @@ banner = html.Div(id='banner',
                                        className='pretty_container'),
                               html.Div(id='Arthur_profit',
                                        className='pretty_container'),
+                              html.Div(id='Dividend_profit',
+                                       className='pretty_container'),
                           ]
 
                       )
